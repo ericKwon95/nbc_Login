@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		607CDA8D2D83CDB0007E94E4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 607CDA8C2D83CDB0007E94E4 /* SnapKit */; };
 		607CDA902D83CDBF007E94E4 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 607CDA8F2D83CDBF007E94E4 /* Then */; };
+		60D820792D8409E5008E8908 /* config.swiftformat in Sources */ = {isa = PBXBuildFile; fileRef = 60D820782D8409DF008E8908 /* config.swiftformat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		60A68D7E2D82BA830097FC87 /* Login.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Login.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60A68D972D82BA840097FC87 /* LoginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		60A68DA12D82BA840097FC87 /* LoginUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60D820782D8409DF008E8908 /* config.swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = config.swiftformat; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -99,6 +101,7 @@
 				60A68D9A2D82BA840097FC87 /* LoginTests */,
 				60A68DA42D82BA840097FC87 /* LoginUITests */,
 				60A68D7F2D82BA830097FC87 /* Products */,
+				60D820782D8409DF008E8908 /* config.swiftformat */,
 			);
 			sourceTree = "<group>";
 		};
@@ -119,6 +122,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 60A68DAA2D82BA840097FC87 /* Build configuration list for PBXNativeTarget "Login" */;
 			buildPhases = (
+				60D81F662D8408C5008E8908 /* ShellScript */,
 				60A68D7A2D82BA830097FC87 /* Sources */,
 				60A68D7B2D82BA830097FC87 /* Frameworks */,
 				60A68D7C2D82BA830097FC87 /* Resources */,
@@ -257,11 +261,33 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		60D81F662D8408C5008E8908 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --config \"$SRCROOT/config.swiftformat\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		60A68D7A2D82BA830097FC87 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60D820792D8409E5008E8908 /* config.swiftformat in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -303,6 +329,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MV89SHQKF4;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Login/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -335,6 +362,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MV89SHQKF4;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Login/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
