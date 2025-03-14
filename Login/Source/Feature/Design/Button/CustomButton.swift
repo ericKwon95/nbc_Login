@@ -52,7 +52,7 @@ final class CustomButton: UIView {
 
     private func configureLayout() {
         button.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview()
+            make.edges.equalToSuperview()
             make.height.equalTo(44)
         }
 
@@ -77,6 +77,8 @@ final class CustomButton: UIView {
             configure.title = title
             configure.baseBackgroundColor = .cancelButtonBackground
             configure.baseForegroundColor = .red
+            configure.background.strokeColor = .cancelButtonStroke
+            configure.background.strokeWidth = 1
             button = UIButton(configuration: configure)
         }
     }
