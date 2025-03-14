@@ -8,14 +8,19 @@
 import XCTest
 
 final class LoginUITestsLaunchTests: XCTestCase {
+    // MARK: - Overridden Properties
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
     }
 
+    // MARK: - Overridden Functions
+
     override func setUpWithError() throws {
         continueAfterFailure = false
     }
+
+    // MARK: - Functions
 
     @MainActor
     func testLaunch() throws {
