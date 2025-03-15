@@ -5,6 +5,7 @@
 //  Created by 권승용 on 3/14/25.
 //
 
+import RxCocoa
 import SnapKit
 import UIKit
 
@@ -28,13 +29,26 @@ final class LoginLandingViewController: UIViewController {
         $0.distribution = .fill
     }
 
+    private let viewModel: LoginLandingViewModel
+
     // MARK: - Lifecycle
+
+    init(viewModel: LoginLandingViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackgound()
         configureHierarchy()
         configureLayout()
+        bind()
     }
 
     // MARK: - Functions
@@ -65,9 +79,25 @@ final class LoginLandingViewController: UIViewController {
             make.horizontalEdges.equalToSuperview().inset(24)
         }
     }
+
+    private func bind() {
+        let input = LoginLandingViewModel.Input(
+            startButtonTapped: startButton.tapped.asObservable()
+        )
+        let _ = viewModel.transform(input: input)
+    }
 }
 
 @available(iOS 17.0, *)
 #Preview {
-    LoginLandingViewController()
+    LoginLandingViewController(
+        viewModel: LoginLandingViewModel(loginKeychainStorage: MockLoginKeychainStorage())
+    )
+}
+
+private struct MockLoginKeychainStorage: LoginKeychainStorageable {
+    func setIsLoggedIn(_: Bool) async throws {}
+    func getIsLoggedIn() async throws -> Bool {
+        true
+    }
 }

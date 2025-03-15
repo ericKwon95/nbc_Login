@@ -5,7 +5,8 @@
 //  Created by 권승용 on 3/14/25.
 //
 
-import Combine
+import RxRelay
+import RxSwift
 import SnapKit
 import Then
 import UIKit
@@ -20,10 +21,12 @@ enum CustomButtonStyle {
 final class CustomButton: UIView {
     // MARK: - Properties
 
-    let tappedSubject = PassthroughSubject<Void, Never>()
+    let tapped = PublishRelay<Void>()
 
     private let imageView = UIImageView()
     private var button = UIButton()
+
+    private let disposeBag = DisposeBag()
 
     // MARK: - Lifecycle
 
@@ -36,6 +39,7 @@ final class CustomButton: UIView {
         configureAppearance(style: style, title: title, image: image)
         configureHierarchy()
         configureLayout()
+        bind()
     }
 
     @available(*, unavailable)
@@ -81,6 +85,12 @@ final class CustomButton: UIView {
             configure.background.strokeWidth = 1
             button = UIButton(configuration: configure)
         }
+    }
+
+    private func bind() {
+        button.rx.tap
+            .bind(to: tapped)
+            .disposed(by: disposeBag)
     }
 }
 
