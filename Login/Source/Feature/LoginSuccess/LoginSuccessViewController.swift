@@ -12,17 +12,16 @@ import UIKit
 final class LoginSuccessViewController: UIViewController {
     // MARK: - Properties
 
-    private let titleLabel = UILabel().then {
-        $0.text = "{닉네임} 님, 환영합니다 😆"
-        $0.font = .systemFont(ofSize: 24, weight: .bold)
-        $0.textColor = .fontBlack
+    private let titleLabel = TitleLabel().then {
+        $0.setText("{닉네임} 님, 환영합니다 😃")
     }
 
-    private let bodyLabel = UILabel().then {
-        $0.text = "로그인에 성공했습니다.\n이제 Login 앱을 마음껏 이용해보세요!"
+    private let bodyLabel = BodyLabel().then {
+        $0.setText("로그인 성공!")
     }
 
     private let logoutButton = CustomButton(style: .confirm, title: "로그아웃", image: .logout)
+
     private let deleteAccountButton = CustomButton(
         style: .cancel,
         title: "회원탈퇴",
