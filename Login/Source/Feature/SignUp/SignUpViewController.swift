@@ -41,6 +41,7 @@ final class SignUpViewController: UIViewController {
 
     private func configureNavigationItem() {
         navigationBar.configureNavigationItem(title: "회원가입")
+        navigationController?.isNavigationBarHidden = true
     }
 
     private func configureBackground() {
