@@ -26,8 +26,8 @@ enum Log {
         logger.info("[ℹ️ INFO] \(message)")
     }
 
-    static func warning(_ message: String) {
-        logger.warning("[⚠️ WARNING] \(message)")
+    static func log(_ message: String) {
+        logger.log("[✏️ LOG] \(message)")
     }
 
     static func error(_ message: String) {
