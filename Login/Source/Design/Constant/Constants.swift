@@ -25,6 +25,7 @@ enum Constants {
         static let inputFieldSpacing: CGFloat = 4
         static let inputButtonSpacing: CGFloat = 16
         static let signUpButtonTitle = "회원가입"
+        static let minimumSpaceBetweenKeyboardAndTextField: CGFloat = 36
     }
 
     enum LoginSuccess {

@@ -58,19 +58,23 @@ final class SignUpViewController: UIViewController {
         configureTapGesture()
         configureTextFieldDelegates()
         makeEmailTextFieldFirstResponder()
+        configureKeyboardNotifications()
     }
 
     // MARK: - Functions
 
+    /// 네비게이션 바 설정
     private func configureNavigationItem() {
         navigationBar.configureNavigationItem(title: Constants.SignUp.navigationTitle)
         navigationController?.isNavigationBarHidden = true
     }
 
+    /// 배경색 설정
     private func configureBackground() {
         view.backgroundColor = .appBackground
     }
 
+    /// 뷰 계층 구조 설정
     private func configureHierarchy() {
         [
             emailInputField,
@@ -86,6 +90,7 @@ final class SignUpViewController: UIViewController {
         ].forEach { view.addSubview($0) }
     }
 
+    /// 오토레이아웃 설정
     private func configureLayout() {
         [
             emailInputField,
@@ -115,6 +120,7 @@ final class SignUpViewController: UIViewController {
         )
     }
 
+    /// 텍스트 필드 델리게이트 설정
     private func configureTextFieldDelegates() {
         emailInputField.textField.delegate = self
         passwordInputField.textField.delegate = self
@@ -122,10 +128,10 @@ final class SignUpViewController: UIViewController {
         nicknameInputField.textField.delegate = self
     }
 
-    private func makeEmailTextFieldFirstResponder() {
-        emailInputField.textField.becomeFirstResponder()
-    }
-
+    /// RxSwift 바인딩 설정
+    /// - 입력 필드의 텍스트 변경 감지
+    /// - 유효성 검사 결과 적용
+    /// - 회원가입 버튼 활성화 상태 관리
     private func bind() {
         let input = SignUpViewModel.Input(
             emailText: emailInputField.rx.text.asObservable(),
@@ -160,7 +166,87 @@ final class SignUpViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
+
+    /// 이메일 입력 필드를 first responder 로 설정
+    private func makeEmailTextFieldFirstResponder() {
+        emailInputField.textField.becomeFirstResponder()
+    }
 }
+
+// MARK: - 키보드 표시/숨김 관리
+
+extension SignUpViewController {
+    /// 키보드 표시/숨김에 따른 뷰 조정을 위한 알림 설정
+    private func configureKeyboardNotifications() {
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillShowNotification)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { owner, notification in
+                owner.keyboardWillShow(notification)
+            }
+            .disposed(by: disposeBag)
+
+        NotificationCenter.default.rx.notification(UIResponder.keyboardWillHideNotification)
+            .observe(on: MainScheduler.instance)
+            .subscribe(with: self) { owner, notification in
+                owner.keyboardWillHide(notification)
+            }
+            .disposed(by: disposeBag)
+    }
+
+    /// 키보드가 표시될 때 호출되는 메서드
+    /// 키보드가 활성화되는 시점의 first reponder 텍스트 필드가 키보드 위에 위치하도록 뷰의 위치를 조정.
+    private func keyboardWillShow(_ notification: Notification) {
+        guard let keyboardFrame = notification
+            .userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect,
+            let duration = notification
+            .userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+            let curve = notification
+            .userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt,
+            let currentTextField = view.currentFirstResponder as? UITextField else {
+            return
+        }
+
+        let keyboardHeight = keyboardFrame.height
+
+        let textFieldMaxY = currentTextField.convert(currentTextField.bounds, to: view).maxY
+        let keyboardMinY = view.frame.height - keyboardHeight
+        let distance = keyboardMinY - textFieldMaxY - Constants.SignUp
+            .minimumSpaceBetweenKeyboardAndTextField
+
+        if distance < 0 {
+            UIView.animate(
+                withDuration: duration,
+                delay: 0,
+                options: UIView.AnimationOptions(rawValue: curve),
+                animations: {
+                    self.view.frame.origin.y = distance
+                }
+            )
+        }
+    }
+
+    /// 키보드가 숨겨질 때 호출되는 메서드
+    /// 조정한 위치 복구
+    private func keyboardWillHide(_ notification: Notification) {
+        guard let duration = notification
+            .userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double,
+            let curve = notification
+            .userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt else {
+            return
+        }
+
+        UIView.animate(
+            withDuration: duration,
+            delay: 0,
+            options: UIView.AnimationOptions(rawValue: curve),
+            animations: {
+                self.view.frame.origin.y = 0
+            }
+        )
+    }
+}
+
+// MARK: - 빈 화면 탭 시 키보드 내림 기능
 
 extension SignUpViewController {
     private func configureTapGesture() {
@@ -174,7 +260,10 @@ extension SignUpViewController {
     }
 }
 
+// MARK: - UITextFieldDelegate
+
 extension SignUpViewController: UITextFieldDelegate {
+    /// 텍스트필드 리턴 키 누를 때 다음 텍스트필드로 포커스 이동
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailInputField.textField {
             passwordInputField.textField.becomeFirstResponder()
@@ -186,5 +275,23 @@ extension SignUpViewController: UITextFieldDelegate {
             textField.resignFirstResponder()
         }
         return true
+    }
+}
+
+// MARK: - 자신 및 서브뷰의 first responder 탐색
+
+extension UIView {
+    fileprivate var currentFirstResponder: UIView? {
+        if isFirstResponder {
+            return self
+        }
+
+        for subview in subviews {
+            if let firstResponder = subview.currentFirstResponder {
+                return firstResponder
+            }
+        }
+
+        return nil
     }
 }
