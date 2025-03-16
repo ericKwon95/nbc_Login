@@ -1,13 +1,14 @@
 # 회원가입 앱
-- 바로인턴 과제 앱 입니다.
+
+> 바로인턴 과제 앱입니다.
 
 ## 기술 스택
-- UIKit, RxSwift, SnapKit, Then
+- **UIKit, RxSwift, SnapKit, Then, Swift Testing**
 
 ## 개발 환경
-- Xcode 16.2
-- macOS 15.3.1
-- 최소지원버전 iOS 16.6
+- **Xcode 16.2**
+- **macOS 15.3.1**
+- **최소 지원 버전: iOS 16.6**
 
 ## 동작 GIF
 
@@ -19,20 +20,61 @@
 | -- | -- |
 |<img src="https://github.com/user-attachments/assets/cf96335c-b344-460c-a274-d95a512fe55d" width=300>|<img src="https://github.com/user-attachments/assets/920286fc-75ba-4ddd-b51b-d8858af8cacc" width=300>|
 
+---
+
 ## 개발 과정
 
 ### 요구사항 시각화
-- Magic Patterns + Figma 활용해 요구사항에 부합한 디자인 초안 작성
+- **Magic Patterns와 Figma**를 활용하여 요구사항을 시각적으로 정리하고, 디자인 초안을 작성함.
 
 <img width="643" alt="Screenshot 2025-03-13 at 4 42 28 PM" src="https://github.com/user-attachments/assets/016d8a24-1c9a-48f1-90c8-e3464e82c690" />
 
 ### 프로젝트 설계
-- 테스트 가능성, 유지보수성 고려 MVVM 패턴 도입
-- 데이터 흐름 명확성 위해 Input Output 패턴 도입
-- 공용 컴포넌트 Design 계층으로 분리해 각 뷰컨에서 재사용
-- 서비스 계층에 햅틱, 회원가입 입력 필드 검증 로직, 유저 관리 객체 역할 분리
-- 레포지토리 계층에 유저 레포지토리 역할 분리
-- 영속성 계층에 코어데이터, 키체인 관련 역할 분리
-- 네비게이션 역할 코디네이터로 분리
-- 각 객체에 DIP 적용, 테스트 가능성 향상
- - 서비스, 영속성 등 주요 기능에 대한 테스트코드 작성 -> **37% 커버리지** 달성
+![프로젝트 아키텍처](https://github.com/user-attachments/assets/3c779d92-5ef9-4c8c-9fc4-3f8c04d40701)
+
+- **테스트 가능성, 유지보수성 고려하여 MVVM 패턴 적용**
+- **데이터 흐름 명확성을 위해 Input/Output 패턴 도입**
+- **공용 컴포넌트 Design 계층으로 분리하여 재사용성 증가**
+- **서비스 계층에 기능별 역할 분리** (햅틱 피드백, 입력 검증, 유저 관리 등)
+- **레포지토리 계층에서 데이터 관리 역할 분리** (CoreData, Keychain 활용)
+- **Navigation 관리를 위한 Coordinator 패턴 적용**
+- **DIP 적용으로 의존성을 줄이고, 테스트 가능성 향상**
+- **주요 기능 테스트 코드 작성 (테스트 커버리지: 37%)**
+
+### 반복 작업 줄이기 위한 개발 환경 설정
+- **SwiftFormat 도입**
+  - 코드 스타일을 일관되게 유지하고, 리뷰 시 가독성을 향상.
+  - 불필요한 빈칸, 들여쓰기, 타입 순서 등을 자동 정리하여 유지보수 편리성 증가.
+
+### 코어 기능에 대한 테스트 코드 작성
+- **CoreData, Keychain, 입력 검증 로직 등 핵심 기능에 대한 테스트 코드 작성**
+- **빠르고 반복적인 테스트로 로직 검증 속도 증가**
+- **Swift Testing의 Parameterized Test 적용 → 가독성 높은 테스트 코드 작성**
+
+```swift
+@Test("특수문자가 포함된 닉네임 실패 테스트", arguments: [
+    "닉네임!",
+    "테스트@닉네임",
+    "한글#닉네임",
+    "닉네임.테스트"
+])
+func validateNicknameWithSpecialCharacters(_ nickname: String) {
+    let result = service.validateNickname(nickname)
+    #expect(result == .invalidCharacter)
+}
+```
+
+### 확장성과 재사용성을 고려한 기능 구현
+- **KeychainManager**를 일반적인 CRUD 구조로 설계하여, 인증 및 보안 관련 기능 확장 가능하도록 구현.
+- **ValidationResult 프로토콜 적용** → 검증 조건을 쉽게 추가할 수 있도록 추상화.
+- **커스텀 UI 컴포넌트 (버튼, 라벨, 텍스트 필드) 생성** → 뷰 역할 분리 및 재사용성 강화.
+
+### UX 개선을 위한 추가 기능
+- **회원가입 화면 진입 시, 이메일 텍스트 필드를 first responder로 지정하여 바로 입력 가능하도록 설정**
+- **Return 버튼 탭 시, 다음 입력 필드로 자동 이동하여 UX 개선**
+- **키보드가 텍스트 필드를 가리지 않도록, 현재 포커싱된 필드에 따라 화면 y축 조정**
+- **버튼 탭 시 햅틱 피드백 적용하여 사용자 경험 강화**
+
+### 코드 품질 유지 및 유지보수 편의성 향상
+- **중요한 로직 및 복잡한 기능에 대한 주석 작성** → 코드 이해도를 높이고 유지보수 용이하게 함.
+- **뷰 컨트롤러에서 사용되는 매직 넘버 및 문자열을 상수화하여 가독성 및 유지보수성 향상.**
