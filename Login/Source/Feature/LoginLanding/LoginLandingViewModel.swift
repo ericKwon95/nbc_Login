@@ -35,6 +35,7 @@ final class LoginLandingViewModel: ViewModelType {
     // MARK: - Functions
 
     func transform(_ input: Input) -> Output {
+        // 시작 버튼 탭 시 로그인 상태 확인 후 적절한 화면으로 이동
         input.startButtonTapped
             .subscribe(with: self) { owner, _ in
                 Task {

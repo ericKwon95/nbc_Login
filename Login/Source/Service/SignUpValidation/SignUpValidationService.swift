@@ -49,12 +49,13 @@ final class SignUpValidationService: SignUpValidator {
         let localPart = String(components[0])
         let domain = String(components[1])
 
-        guard validateLocalPart(localPart) == .valid else {
-            return .invalid
+        let localPartValidationResult = validateLocalPart(localPart)
+        guard localPartValidationResult == .valid else {
+            return localPartValidationResult
         }
 
         guard validateDomain(domain) == .valid else {
-            return .invalid
+            return .invalidDomain
         }
 
         return .valid
@@ -108,7 +109,10 @@ final class SignUpValidationService: SignUpValidator {
         _ password: String,
         _ confirmPassword: String
     ) -> ConfirmPasswordValidationResult {
-        password == confirmPassword ? .valid : .invalid
+        guard !confirmPassword.isEmpty else {
+            return .empty
+        }
+        return password == confirmPassword ? .valid : .invalid
     }
 
     /// 닉네임의 유효성을 검증합니다.
@@ -138,15 +142,15 @@ final class SignUpValidationService: SignUpValidator {
 extension SignUpValidationService {
     private func validateLocalPart(_ localPart: String) -> EmailValidationResult {
         guard (6 ... 20).contains(localPart.count) else {
-            return .invalid
+            return .invalidLength
         }
 
         if let firstChar = localPart.first, firstChar.isNumber {
-            return .invalid
+            return .startsWithNumber
         }
 
         guard localPart.range(of: RegexPattern.localPart, options: .regularExpression) != nil else {
-            return .invalid
+            return .invalidCharacter
         }
 
         return .valid
@@ -154,7 +158,7 @@ extension SignUpValidationService {
 
     private func validateDomain(_ domain: String) -> EmailValidationResult {
         guard domain.range(of: RegexPattern.domain, options: .regularExpression) != nil else {
-            return .invalid
+            return .invalidDomain
         }
 
         return .valid

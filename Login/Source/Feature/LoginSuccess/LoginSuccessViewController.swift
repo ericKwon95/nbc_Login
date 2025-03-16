@@ -19,14 +19,18 @@ final class LoginSuccessViewController: UIViewController {
     private let titleLabel = TitleLabel()
 
     private let bodyLabel = BodyLabel().then {
-        $0.setText("로그인 성공!")
+        $0.setText(Constants.LoginSuccess.loginSuccessMessage)
     }
 
-    private let logoutButton = CustomButton(style: .confirm, title: "로그아웃", image: .logout)
+    private let logoutButton = CustomButton(
+        style: .confirm,
+        title: Constants.LoginSuccess.logoutButtonTitle,
+        image: .logout
+    )
 
     private let deleteAccountButton = CustomButton(
         style: .cancel,
-        title: "회원탈퇴",
+        title: Constants.LoginSuccess.deleteAccountButtonTitle,
         image: .deleteAccount
     )
 
@@ -56,6 +60,7 @@ final class LoginSuccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackground()
+        configureNavigationItem()
         configureHierarchy()
         configureLayout()
         bind()
@@ -66,6 +71,10 @@ final class LoginSuccessViewController: UIViewController {
 
     private func configureBackground() {
         view.backgroundColor = .appBackground
+    }
+
+    private func configureNavigationItem() {
+        navigationController?.isNavigationBarHidden = true
     }
 
     private func configureHierarchy() {
@@ -106,7 +115,10 @@ final class LoginSuccessViewController: UIViewController {
 
         output.userNickname
             .drive(with: self, onNext: { owner, nickname in
-                owner.titleLabel.setText("\(nickname) 님, 환영합니다 😃")
+                owner.titleLabel.setText(String(
+                    format: Constants.LoginSuccess.welcomeMessageFormat,
+                    nickname
+                ))
             })
             .disposed(by: disposeBag)
     }

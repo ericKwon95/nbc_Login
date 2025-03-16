@@ -204,8 +204,9 @@ final class SignUpViewModel: ViewModelType {
                 let validationResult = owner.validationService.validateEmailDuplication(email)
 
                 if validationResult.isValid {
+                    let hashedPassword = CryptoUtils.sha256Hash(password)
                     let user = User(nickname: nickname, email: email)
-                    owner.userRepository.createUser(with: user, password: password)
+                    owner.userRepository.createUser(with: user, password: hashedPassword)
                     owner.saveLoginInfo(with: user)
                     owner.navigateToLoginSuccess.accept(())
                 }

@@ -14,7 +14,7 @@ struct DefaultUserRepositoryTests {
     func createUser() async throws {
         let mockManager = MockCoreDataManager()
         let repository = DefaultUserRepository(coredataManager: mockManager)
-        let user = Constant.user
+        let user = TestConstant.user
         let password = "password"
 
         repository.createUser(with: user, password: password)
@@ -29,7 +29,7 @@ struct DefaultUserRepositoryTests {
     func fetchUser() throws {
         let mockManager = MockCoreDataManager()
         let repository = DefaultUserRepository(coredataManager: mockManager)
-        let expectedUser = Constant.user
+        let expectedUser = TestConstant.user
 
         let user = try repository.fetchUser(by: expectedUser.email)
 
@@ -42,53 +42,11 @@ struct DefaultUserRepositoryTests {
     func deleteUser() throws {
         let mockManager = MockCoreDataManager()
         let repository = DefaultUserRepository(coredataManager: mockManager)
-        let email = Constant.user.email
+        let email = TestConstant.user.email
 
         try repository.deleteUser(by: email)
 
         #expect(mockManager.deleteUserCalled)
         #expect(mockManager.savedEmail == email)
     }
-}
-
-private final class MockCoreDataManager: CoreDataManageable {
-    // MARK: - Properties
-
-    var createUserCalled = false
-    var fetchUserCalled = false
-    var deleteUserCalled = false
-    var savedEmail: String?
-    var savedNickname: String?
-    var savedPassword: String?
-
-    // MARK: - Functions
-
-    func createUser(nickname: String, email: String, password: String) {
-        createUserCalled = true
-        savedNickname = nickname
-        savedEmail = email
-        savedPassword = password
-    }
-
-    func fetchUser(email: String) throws -> User {
-        fetchUserCalled = true
-        savedEmail = email
-        return Constant.user
-    }
-
-    func deleteUser(with email: String) throws {
-        deleteUserCalled = true
-        savedEmail = email
-    }
-
-    func removeAll() throws {
-        // 구현 불필요
-    }
-}
-
-private enum Constant {
-    static let user = User(
-        nickname: "Nickname",
-        email: "testemail@example.com"
-    )
 }

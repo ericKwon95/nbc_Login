@@ -91,7 +91,8 @@ final class CustomButton: UIView {
 
 extension Reactive where Base: CustomButton {
     var tap: ControlEvent<Void> {
-        base.button.rx.tap
+        HapticService.selection.run()
+        return base.button.rx.tap
     }
 }
 
