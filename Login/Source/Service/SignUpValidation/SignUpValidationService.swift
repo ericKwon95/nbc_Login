@@ -11,22 +11,37 @@ private enum RegexPattern {
     static let domain = "^[a-zA-Z0-9][a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.[a-zA-Z]{2,}$"
     static let uppercase = ".*[A-Z]+.*"
     static let specialChar = ".*[!@#$%^&*()\\-_=+\\[\\]{};:'\",.<>/?]+.*"
+    static let whitespace = ".*\\s+.*"
     static let number = ".*[0-9]+.*"
 }
 
 /// 회원가입 과정에서 입력 값을 검증하는 서비스
-struct SignUpValidationService: SignUpValidator {
+final class SignUpValidationService: SignUpValidator {
+    // MARK: - Properties
+
+    private let repository: UserRepository
+
+    // MARK: - Lifecycle
+
+    init(repository: UserRepository) {
+        self.repository = repository
+    }
+
+    // MARK: - Functions
+
     /// 이메일 주소의 유효성을 검증합니다.
     /// - Parameter email: 이메일 주소
     /// - Returns: 이메일 주소의 유효성 검증 결과
     func validateEmail(_ email: String) -> EmailValidationResult {
-        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !containsWhitespace(email) else {
+            return .invalidWhitespace
+        }
 
-        guard !trimmedEmail.isEmpty else {
+        guard !email.isEmpty else {
             return .empty
         }
 
-        let components = trimmedEmail.split(separator: "@")
+        let components = email.split(separator: "@")
         guard components.count == 2 else {
             return .invalid
         }
@@ -45,25 +60,39 @@ struct SignUpValidationService: SignUpValidator {
         return .valid
     }
 
+    /// 이메일 주소의 중복 여부를 검증합니다.
+    /// - Parameter email: 이메일 주소
+    /// - Returns: 이메일 주소의 중복 검증 결과
+    func validateEmailDuplication(_ email: String) -> EmailValidationResult {
+        do {
+            _ = try repository.fetchUser(by: email)
+            return .duplicated
+        } catch {
+            return .valid
+        }
+    }
+
     /// 비밀번호의 유효성을 검증합니다.
     /// - Parameter password: 비밀번호
     /// - Returns: 비밀번호의 유효성 검증 결과
     func validatePassword(_ password: String) -> PasswordValidationResult {
-        let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !containsWhitespace(password) else {
+            return .invalidWhitespace
+        }
 
-        guard !trimmedPassword.isEmpty else {
+        guard !password.isEmpty else {
             return .empty
         }
-        guard (8 ... 24).contains(trimmedPassword.count) else {
+        guard (8 ... 24).contains(password.count) else {
             return .invalidLength
         }
-        guard containsUppercase(trimmedPassword) else {
+        guard containsUppercase(password) else {
             return .noUppercase
         }
-        guard containsSpecialCharacter(trimmedPassword) else {
+        guard containsSpecialCharacter(password) else {
             return .noSpecialCharacter
         }
-        guard containsNumber(trimmedPassword) else {
+        guard containsNumber(password) else {
             return .noNumber
         }
 
@@ -75,23 +104,28 @@ struct SignUpValidationService: SignUpValidator {
     ///   - password: 비밀번호
     ///   - confirmPassword: 비밀번호 확인
     /// - Returns: 비밀번호와 비밀번호 확인이 일치하는지 여부
-    func confirmPassword(_ password: String, _ confirmPassword: String) -> Bool {
-        password == confirmPassword
+    func confirmPassword(
+        _ password: String,
+        _ confirmPassword: String
+    ) -> ConfirmPasswordValidationResult {
+        password == confirmPassword ? .valid : .invalid
     }
 
     /// 닉네임의 유효성을 검증합니다.
     /// - Parameter nickname: 닉네임
     /// - Returns: 닉네임의 유효성 검증 결과
     func validateNickname(_ nickname: String) -> NicknameValidationResult {
-        let trimmedNickname = nickname.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !containsWhitespace(nickname) else {
+            return .invalidWhitespace
+        }
 
-        guard !trimmedNickname.isEmpty else {
+        guard !nickname.isEmpty else {
             return .empty
         }
-        guard (4 ... 12).contains(trimmedNickname.count) else {
+        guard (4 ... 12).contains(nickname.count) else {
             return .invalidLength
         }
-        guard !containsSpecialCharacter(trimmedNickname) else {
+        guard !containsSpecialCharacter(nickname) else {
             return .invalidCharacter
         }
 
@@ -136,5 +170,9 @@ extension SignUpValidationService {
 
     private func containsNumber(_ text: String) -> Bool {
         text.range(of: RegexPattern.number, options: .regularExpression) != nil
+    }
+
+    private func containsWhitespace(_ text: String) -> Bool {
+        text.range(of: RegexPattern.whitespace, options: .regularExpression) != nil
     }
 }

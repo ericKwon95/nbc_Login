@@ -5,6 +5,8 @@
 //  Created by 권승용 on 3/14/25.
 //
 
+import RxCocoa
+import RxSwift
 import SnapKit
 import UIKit
 
@@ -27,7 +29,21 @@ final class SignUpViewController: UIViewController {
         $0.alignment = .center
     }
 
+    private let viewModel: SignUpViewModel
+
+    private let disposeBag = DisposeBag()
+
     // MARK: - Lifecycle
+
+    init(viewModel: SignUpViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +51,7 @@ final class SignUpViewController: UIViewController {
         configureBackground()
         configureHierarchy()
         configureLayout()
+        bind()
     }
 
     // MARK: - Functions
@@ -86,9 +103,43 @@ final class SignUpViewController: UIViewController {
             make.horizontalEdges.equalToSuperview().inset(24)
         }
     }
+
+    private func bind() {
+        let input = SignUpViewModel.Input(
+            emailText: emailInputField.rx.text.asObservable(),
+            passwordText: passwordInputField.rx.text.asObservable(),
+            confirmPasswordText: confirmPasswordInputField.rx.text.asObservable(),
+            nicknameText: nicknameInputField.rx.text.asObservable(),
+            signUpButtonTapped: signupButton.rx.tap.asObservable()
+        )
+
+        let output = viewModel.transform(input)
+
+        output.validationResult
+            .emit(with: self) { owner, validationResult in
+                if validationResult is EmailValidationResult {
+                    owner.emailInputField.applyValidationResult(validationResult)
+                } else if validationResult is PasswordValidationResult {
+                    owner.passwordInputField.applyValidationResult(validationResult)
+                } else if validationResult is ConfirmPasswordValidationResult {
+                    owner.confirmPasswordInputField.applyValidationResult(validationResult)
+                } else if validationResult is NicknameValidationResult {
+                    owner.nicknameInputField.applyValidationResult(validationResult)
+                } else {
+                    Log.error("Unknown ValidationResult 방출 - 확인 필요")
+                }
+            }
+            .disposed(by: disposeBag)
+
+        output.isSignUpButtonEnabled
+            .drive(with: self) { owner, isEnabled in
+                owner.signupButton.setEnableStatus(isEnabled)
+            }
+            .disposed(by: disposeBag)
+    }
 }
 
-@available(iOS 17.0, *)
-#Preview {
-    SignUpViewController()
-}
+// @available(iOS 17.0, *)
+// #Preview {
+//    SignUpViewController()
+// }
