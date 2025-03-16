@@ -17,6 +17,12 @@ final class CustomInputField: UIView {
 
     let textField = UITextField().then {
         $0.borderStyle = .roundedRect
+        $0.backgroundColor = .inputFormBackground
+        $0.textColor = .fontBlack
+        $0.layer.borderColor = UIColor.cancelButtonStroke.cgColor
+        $0.layer.borderWidth = 1
+        $0.layer.cornerRadius = 8
+        $0.clipsToBounds = true
     }
 
     private let inputTitle = UILabel().then {
