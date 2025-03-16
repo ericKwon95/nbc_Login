@@ -41,6 +41,14 @@ struct NicknameValidationTests {
         #expect(result == .invalidLength)
     }
 
+    @Test("공백이 포함된 닉네임 실패 테스트", arguments: [
+        "닉 네임",
+    ])
+    func validateNicknameWithWhiteSpace(_ nickname: String) {
+        let result = service.validateNickname(nickname)
+        #expect(result == .invalidWhitespace)
+    }
+
     @Test("특수문자가 포함된 닉네임 실패 테스트", arguments: [
         "닉네임!",
         "테스트@닉네임",
@@ -54,7 +62,6 @@ struct NicknameValidationTests {
 
     @Test("비어있는 닉네임 실패 테스트", arguments: [
         "",
-        "  "
     ])
     func validateEmptyNickname(_ nickname: String) {
         let result = service.validateNickname(nickname)

@@ -39,11 +39,18 @@ struct EmailValidationTests {
         #expect(result == .invalid)
     }
 
+    @Test("공백 포함 이메일 실패 테스트", arguments: [
+        "test email@example.com",
+    ])
+    func validateEmailWithWhitespace(_ email: String) {
+        let result = service.validateEmail(email)
+        #expect(result == .invalidWhitespace)
+    }
+
     @Test("허용되지 않는 문자 포함 이메일 실패 테스트", arguments: [
         "testEmail@example.com", // 대문자
         "test.email!!!@example.com", // 특수문자
         "testEmail@exämple.com", // 비ASCII 문자
-        "test space@example.com" // 공백
     ])
     func validateInvalidEmailWithInvalidCharacter(_ email: String) {
         let result = service.validateEmail(email)
@@ -65,7 +72,6 @@ struct EmailValidationTests {
 
     @Test("빈 이메일 실패 테스트", arguments: [
         "",
-        " ",
     ])
     func validateEmptyEmail(_ email: String) {
         let result = service.validateEmail(email)
