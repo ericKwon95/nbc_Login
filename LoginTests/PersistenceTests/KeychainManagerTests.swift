@@ -43,27 +43,3 @@ final class KeychainManagerTests {
         })
     }
 }
-
-extension KeychainManager {
-    func clearAllData() async throws {
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecMatchLimit as String: kSecMatchLimitAll,
-        ]
-
-        // 현재 저장된 모든 항목 조회
-        var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-
-        if status == errSecSuccess {
-            if let items = result as? [[String: Any]] {
-                for item in items {
-                    if let key = item[kSecAttrAccount as String] as? String {
-                        // 각 항목 삭제
-                        try await delete(forKey: key)
-                    }
-                }
-            }
-        }
-    }
-}
