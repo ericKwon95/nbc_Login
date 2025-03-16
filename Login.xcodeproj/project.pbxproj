@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		602F07132D85F1FC004982FF /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 602F07122D85F1FC004982FF /* RxCocoa */; };
+		602F07152D85F1FC004982FF /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 602F07142D85F1FC004982FF /* RxRelay */; };
+		602F07172D85F1FC004982FF /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 602F07162D85F1FC004982FF /* RxSwift */; };
 		607CDA8D2D83CDB0007E94E4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 607CDA8C2D83CDB0007E94E4 /* SnapKit */; };
 		607CDA902D83CDBF007E94E4 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 607CDA8F2D83CDBF007E94E4 /* Then */; };
 /* End PBXBuildFile section */
@@ -19,19 +22,12 @@
 			remoteGlobalIDString = 60A68D7D2D82BA830097FC87;
 			remoteInfo = Login;
 		};
-		60A68DA22D82BA840097FC87 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 60A68D762D82BA830097FC87 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 60A68D7D2D82BA830097FC87;
-			remoteInfo = Login;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		60A68D7E2D82BA830097FC87 /* Login.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Login.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60A68D972D82BA840097FC87 /* LoginTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		60A68DA12D82BA840097FC87 /* LoginUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoginUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		60D820782D8409DF008E8908 /* config.swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = config.swiftformat; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -58,11 +54,6 @@
 			path = LoginTests;
 			sourceTree = "<group>";
 		};
-		60A68DA42D82BA840097FC87 /* LoginUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = LoginUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,19 +61,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				602F07132D85F1FC004982FF /* RxCocoa in Frameworks */,
 				607CDA8D2D83CDB0007E94E4 /* SnapKit in Frameworks */,
+				602F07172D85F1FC004982FF /* RxSwift in Frameworks */,
+				602F07152D85F1FC004982FF /* RxRelay in Frameworks */,
 				607CDA902D83CDBF007E94E4 /* Then in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		60A68D942D82BA840097FC87 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		60A68D9E2D82BA840097FC87 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -95,9 +82,9 @@
 		60A68D752D82BA830097FC87 = {
 			isa = PBXGroup;
 			children = (
+				60D820782D8409DF008E8908 /* config.swiftformat */,
 				60A68D802D82BA830097FC87 /* Login */,
 				60A68D9A2D82BA840097FC87 /* LoginTests */,
-				60A68DA42D82BA840097FC87 /* LoginUITests */,
 				60A68D7F2D82BA830097FC87 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,7 +94,6 @@
 			children = (
 				60A68D7E2D82BA830097FC87 /* Login.app */,
 				60A68D972D82BA840097FC87 /* LoginTests.xctest */,
-				60A68DA12D82BA840097FC87 /* LoginUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -119,6 +105,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 60A68DAA2D82BA840097FC87 /* Build configuration list for PBXNativeTarget "Login" */;
 			buildPhases = (
+				60D81F662D8408C5008E8908 /* ShellScript */,
 				60A68D7A2D82BA830097FC87 /* Sources */,
 				60A68D7B2D82BA830097FC87 /* Frameworks */,
 				60A68D7C2D82BA830097FC87 /* Resources */,
@@ -134,6 +121,9 @@
 			packageProductDependencies = (
 				607CDA8C2D83CDB0007E94E4 /* SnapKit */,
 				607CDA8F2D83CDBF007E94E4 /* Then */,
+				602F07122D85F1FC004982FF /* RxCocoa */,
+				602F07142D85F1FC004982FF /* RxRelay */,
+				602F07162D85F1FC004982FF /* RxSwift */,
 			);
 			productName = Login;
 			productReference = 60A68D7E2D82BA830097FC87 /* Login.app */;
@@ -162,29 +152,6 @@
 			productReference = 60A68D972D82BA840097FC87 /* LoginTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		60A68DA02D82BA840097FC87 /* LoginUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 60A68DB22D82BA840097FC87 /* Build configuration list for PBXNativeTarget "LoginUITests" */;
-			buildPhases = (
-				60A68D9D2D82BA840097FC87 /* Sources */,
-				60A68D9E2D82BA840097FC87 /* Frameworks */,
-				60A68D9F2D82BA840097FC87 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				60A68DA32D82BA840097FC87 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				60A68DA42D82BA840097FC87 /* LoginUITests */,
-			);
-			name = LoginUITests;
-			packageProductDependencies = (
-			);
-			productName = LoginUITests;
-			productReference = 60A68DA12D82BA840097FC87 /* LoginUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -202,10 +169,6 @@
 						CreatedOnToolsVersion = 16.2;
 						TestTargetID = 60A68D7D2D82BA830097FC87;
 					};
-					60A68DA02D82BA840097FC87 = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 60A68D7D2D82BA830097FC87;
-					};
 				};
 			};
 			buildConfigurationList = 60A68D792D82BA830097FC87 /* Build configuration list for PBXProject "Login" */;
@@ -220,6 +183,7 @@
 			packageReferences = (
 				607CDA8B2D83CDB0007E94E4 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				607CDA8E2D83CDBF007E94E4 /* XCRemoteSwiftPackageReference "Then" */,
+				602F07112D85F1FC004982FF /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 60A68D7F2D82BA830097FC87 /* Products */;
@@ -228,7 +192,6 @@
 			targets = (
 				60A68D7D2D82BA830097FC87 /* Login */,
 				60A68D962D82BA840097FC87 /* LoginTests */,
-				60A68DA02D82BA840097FC87 /* LoginUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -248,14 +211,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		60A68D9F2D82BA840097FC87 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		60D81F662D8408C5008E8908 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 12;
 			files = (
 			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
 			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd BuildTools\nSDKROOT=(xcrun --sdk macosx --show-sdk-path)\n#swift package update #Uncomment this line temporarily to update the version used to the latest matching your BuildTools/Package.swift file\nswift run -c release swiftformat \"$SRCROOT\" --config \"$SRCROOT/config.swiftformat\"\n";
 		};
-/* End PBXResourcesBuildPhase section */
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		60A68D7A2D82BA830097FC87 /* Sources */ = {
@@ -272,13 +249,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		60A68D9D2D82BA840097FC87 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -286,11 +256,6 @@
 			isa = PBXTargetDependency;
 			target = 60A68D7D2D82BA830097FC87 /* Login */;
 			targetProxy = 60A68D982D82BA840097FC87 /* PBXContainerItemProxy */;
-		};
-		60A68DA32D82BA840097FC87 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 60A68D7D2D82BA830097FC87 /* Login */;
-			targetProxy = 60A68DA22D82BA840097FC87 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -303,6 +268,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MV89SHQKF4;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Login/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -335,6 +301,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = MV89SHQKF4;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Login/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -516,40 +483,6 @@
 			};
 			name = Release;
 		};
-		60A68DB32D82BA840097FC87 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MV89SHQKF4;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ericKwon.LoginUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Login;
-			};
-			name = Debug;
-		};
-		60A68DB42D82BA840097FC87 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MV89SHQKF4;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ericKwon.LoginUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = Login;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -580,18 +513,17 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		60A68DB22D82BA840097FC87 /* Build configuration list for PBXNativeTarget "LoginUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				60A68DB32D82BA840097FC87 /* Debug */,
-				60A68DB42D82BA840097FC87 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		602F07112D85F1FC004982FF /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.9.0;
+			};
+		};
 		607CDA8B2D83CDB0007E94E4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -611,6 +543,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		602F07122D85F1FC004982FF /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602F07112D85F1FC004982FF /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		602F07142D85F1FC004982FF /* RxRelay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602F07112D85F1FC004982FF /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxRelay;
+		};
+		602F07162D85F1FC004982FF /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 602F07112D85F1FC004982FF /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
 		607CDA8C2D83CDB0007E94E4 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 607CDA8B2D83CDB0007E94E4 /* XCRemoteSwiftPackageReference "SnapKit" */;
