@@ -55,6 +55,7 @@ final class SignUpViewController: UIViewController {
         configureHierarchy()
         configureLayout()
         bind()
+        configureTapGesture()
     }
 
     // MARK: - Functions
@@ -148,7 +149,14 @@ final class SignUpViewController: UIViewController {
     }
 }
 
-// @available(iOS 17.0, *)
-// #Preview {
-//    SignUpViewController()
-// }
+extension SignUpViewController {
+    private func configureTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGesture)
+    }
+
+    @objc
+    private func handleTap() {
+        view.endEditing(true)
+    }
+}
