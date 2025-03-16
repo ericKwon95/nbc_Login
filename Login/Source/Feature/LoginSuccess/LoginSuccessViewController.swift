@@ -14,9 +14,9 @@ import UIKit
 final class LoginSuccessViewController: UIViewController {
     // MARK: - Properties
 
-    private let titleLabel = TitleLabel().then {
-        $0.setText("{닉네임} 님, 환영합니다 😃")
-    }
+    private let viewModel: LoginSuccessViewModel
+
+    private let titleLabel = TitleLabel()
 
     private let bodyLabel = BodyLabel().then {
         $0.setText("로그인 성공!")
@@ -37,13 +37,29 @@ final class LoginSuccessViewController: UIViewController {
         $0.distribution = .fill
     }
 
+    private let viewDidLoadRelay = PublishRelay<Void>()
+
+    private let disposeBag = DisposeBag()
+
     // MARK: - Lifecycle
+
+    init(viewModel: LoginSuccessViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackground()
         configureHierarchy()
         configureLayout()
+        bind()
+        viewDidLoadRelay.accept(())
     }
 
     // MARK: - Functions
@@ -78,9 +94,20 @@ final class LoginSuccessViewController: UIViewController {
             make.centerY.equalToSuperview()
         }
     }
-}
 
-@available(iOS 17.0, *)
-#Preview {
-    LoginSuccessViewController()
+    private func bind() {
+        let input = LoginSuccessViewModel.Input(
+            viewDidLoad: viewDidLoadRelay.asObservable(),
+            logoutTapped: logoutButton.rx.tap.asObservable(),
+            deleteAccountTapped: deleteAccountButton.rx.tap.asObservable()
+        )
+
+        let output = viewModel.transform(input)
+
+        output.userNickname
+            .drive(with: self, onNext: { owner, nickname in
+                owner.titleLabel.setText("\(nickname) 님, 환영합니다 😃")
+            })
+            .disposed(by: disposeBag)
+    }
 }
