@@ -108,7 +108,10 @@ final class SignUpValidationService: SignUpValidator {
         _ password: String,
         _ confirmPassword: String
     ) -> ConfirmPasswordValidationResult {
-        password == confirmPassword ? .valid : .invalid
+        guard !confirmPassword.isEmpty else {
+            return .empty
+        }
+        return password == confirmPassword ? .valid : .invalid
     }
 
     /// 닉네임의 유효성을 검증합니다.

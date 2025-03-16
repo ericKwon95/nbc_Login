@@ -115,21 +115,18 @@ final class SignUpViewModel: ViewModelType {
         nickname: Observable<ValidationResult>
     ) {
         let email = input.emailText
-            .filter { !$0.isEmpty }
             .withUnretained(self)
             .map { owner, email in
                 owner.validationService.validateEmail(email) as ValidationResult
             }
 
         let password = input.passwordText
-            .filter { !$0.isEmpty }
             .withUnretained(self)
             .map { owner, password in
                 owner.validationService.validatePassword(password) as ValidationResult
             }
 
         let confirmPassword = input.confirmPasswordText
-            .filter { !$0.isEmpty }
             .withUnretained(self)
             .withLatestFrom(input.passwordText) { main, password in
                 let (owner, confirmPassword) = main
@@ -140,7 +137,6 @@ final class SignUpViewModel: ViewModelType {
             }
 
         let nickname = input.nicknameText
-            .filter { !$0.isEmpty }
             .withUnretained(self)
             .map { owner, nickname in
                 owner.validationService.validateNickname(nickname) as ValidationResult

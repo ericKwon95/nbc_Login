@@ -56,12 +56,7 @@ final class CustomInputField: UIView {
     // MARK: - Functions
 
     func applyValidationResult(_ result: ValidationResult) {
-        let emoji = result.isValid ? "✅" : "❌"
-        validationResultLabel.text = "\(emoji) \(result.description)"
-    }
-
-    func removeValidationResult() {
-        validationResultLabel.text = " "
+        validationResultLabel.text = "\(result.description)"
     }
 
     private func configureHierarchy() {
