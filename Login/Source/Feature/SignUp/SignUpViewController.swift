@@ -22,7 +22,10 @@ final class SignUpViewController: UIViewController {
     private let passwordInputField = CustomInputField(with: .password)
     private let confirmPasswordInputField = CustomInputField(with: .confirmPassword)
     private let nicknameInputField = CustomInputField(with: .nickname)
-    private let signupButton = CustomButton(style: .confirm, title: "회원가입")
+    private let signupButton = CustomButton(
+        style: .confirm,
+        title: Constants.SignUp.signUpButtonTitle
+    )
 
     private let verticalStackView = UIStackView().then {
         $0.axis = .vertical
@@ -57,7 +60,7 @@ final class SignUpViewController: UIViewController {
     // MARK: - Functions
 
     private func configureNavigationItem() {
-        navigationBar.configureNavigationItem(title: "회원가입")
+        navigationBar.configureNavigationItem(title: Constants.SignUp.navigationTitle)
         navigationController?.isNavigationBarHidden = true
     }
 
@@ -95,15 +98,18 @@ final class SignUpViewController: UIViewController {
 
         navigationBar.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
-            make.height.equalTo(44)
+            make.height.equalTo(Constants.SignUp.navigationBarHeight)
         }
 
         verticalStackView.snp.makeConstraints { make in
-            make.top.equalTo(navigationBar.snp.bottom).offset(16)
-            make.horizontalEdges.equalToSuperview().inset(24)
+            make.top.equalTo(navigationBar.snp.bottom).offset(Constants.SignUp.stackViewTopSpacing)
+            make.horizontalEdges.equalToSuperview().inset(Constants.SignUp.horizontalInset)
         }
 
-        verticalStackView.setCustomSpacing(16, after: nicknameInputField)
+        verticalStackView.setCustomSpacing(
+            Constants.SignUp.inputButtonSpacing,
+            after: nicknameInputField
+        )
     }
 
     private func bind() {

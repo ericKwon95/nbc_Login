@@ -15,18 +15,22 @@ final class LoginLandingViewController: UIViewController {
     private let viewModel: LoginLandingViewModel
 
     private let welcomeTitleLabel = TitleLabel().then {
-        $0.setText("환영합니다! 😆")
+        $0.setText(Constants.LoginLanding.welcomeTitle)
     }
 
     private let welcomeBodyLabel = BodyLabel().then {
-        $0.setText("로그인하고 다양한 서비스를 이용해보세요.")
+        $0.setText(Constants.LoginLanding.welcomeBody)
     }
 
-    private let startButton = CustomButton(style: .confirm, title: "시작하기", image: .arrowRight)
+    private let startButton = CustomButton(
+        style: .confirm,
+        title: Constants.LoginLanding.startButtonTitle,
+        image: .arrowRight
+    )
 
     private let verticalStackView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = 16
+        $0.spacing = Constants.LoginLanding.stackViewSpacing
         $0.alignment = .center
         $0.distribution = .fill
     }
@@ -80,10 +84,13 @@ final class LoginLandingViewController: UIViewController {
 
         verticalStackView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.horizontalEdges.equalToSuperview().inset(24)
+            make.horizontalEdges.equalToSuperview().inset(Constants.LoginLanding.stackViewInset)
         }
 
-        verticalStackView.setCustomSpacing(32, after: welcomeBodyLabel)
+        verticalStackView.setCustomSpacing(
+            Constants.LoginLanding.welcomeBodySpacing,
+            after: welcomeBodyLabel
+        )
     }
 
     private func bind() {
