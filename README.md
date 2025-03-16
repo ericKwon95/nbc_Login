@@ -78,3 +78,122 @@ func validateNicknameWithSpecialCharacters(_ nickname: String) {
 ### 코드 품질 유지 및 유지보수 편의성 향상
 - **중요한 로직 및 복잡한 기능에 대한 주석 작성** → 코드 이해도를 높이고 유지보수 용이하게 함.
 - **뷰 컨트롤러에서 사용되는 매직 넘버 및 문자열을 상수화하여 가독성 및 유지보수성 향상.**
+
+## 프로젝트 구조
+```
+📦Login
+ ┣ 📂App
+ ┃ ┣ 📂Base.lproj
+ ┃ ┃ ┗ 📜LaunchScreen.storyboard
+ ┃ ┣ 📂Login.xcdatamodeld
+ ┃ ┃ ┣ 📂Login.xcdatamodel
+ ┃ ┃ ┃ ┗ 📜contents
+ ┃ ┃ ┗ 📜.xccurrentversion
+ ┃ ┣ 📜.DS_Store
+ ┃ ┣ 📜AppDelegate.swift
+ ┃ ┣ 📜Info.plist
+ ┃ ┗ 📜SceneDelegate.swift
+ ┣ 📂Base.lproj
+ ┣ 📂Resource
+ ┃ ┗ 📂Assets.xcassets
+ ┃ ┃ ┣ 📂AccentColor.colorset
+ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┣ 📂AppIcon.appiconset
+ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┣ 📂Color
+ ┃ ┃ ┃ ┣ 📂appBackground.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂appPrimary.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂cancelButtonBackground.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂cancelButtonStroke.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂confirmButtonBackground.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂fontBlack.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂fontGray.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂fontWhite.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┣ 📂inputFormBackground.colorset
+ ┃ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┣ 📂Image
+ ┃ ┃ ┃ ┣ 📂arrowLeft.imageset
+ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┗ 📜Frame.svg
+ ┃ ┃ ┃ ┣ 📂arrowRight.imageset
+ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┗ 📜Frame.svg
+ ┃ ┃ ┃ ┣ 📂deleteAccount.imageset
+ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┗ 📜Frame.svg
+ ┃ ┃ ┃ ┣ 📂logout.imageset
+ ┃ ┃ ┃ ┃ ┣ 📜Contents.json
+ ┃ ┃ ┃ ┃ ┗ 📜Frame.svg
+ ┃ ┃ ┃ ┗ 📜Contents.json
+ ┃ ┃ ┗ 📜Contents.json
+ ┣ 📂Source
+ ┃ ┣ 📂Common
+ ┃ ┃ ┣ 📂Base
+ ┃ ┃ ┃ ┗ 📜ViewModelType.swift
+ ┃ ┃ ┣ 📂Crypto
+ ┃ ┃ ┃ ┗ 📜CryptoUtils.swift
+ ┃ ┃ ┣ 📂Error
+ ┃ ┃ ┃ ┣ 📜CoreDataError.swift
+ ┃ ┃ ┃ ┗ 📜KeychainError.swift
+ ┃ ┃ ┗ 📂Log
+ ┃ ┃ ┃ ┗ 📜Log.swift
+ ┃ ┣ 📂Coordination
+ ┃ ┃ ┗ 📜AppCoordinator.swift
+ ┃ ┣ 📂Design
+ ┃ ┃ ┣ 📂Button
+ ┃ ┃ ┃ ┗ 📜CustomButton.swift
+ ┃ ┃ ┣ 📂Constant
+ ┃ ┃ ┃ ┗ 📜Constants.swift
+ ┃ ┃ ┣ 📂InputField
+ ┃ ┃ ┃ ┣ 📜CustomInputField.swift
+ ┃ ┃ ┃ ┗ 📜InputFieldType.swift
+ ┃ ┃ ┣ 📂Label
+ ┃ ┃ ┃ ┣ 📜BodyLabel.swift
+ ┃ ┃ ┃ ┗ 📜TitleLabel.swift
+ ┃ ┃ ┗ 📂NavigationBar
+ ┃ ┃ ┃ ┗ 📜CustomNavigationBar.swift
+ ┃ ┣ 📂Feature
+ ┃ ┃ ┣ 📂LoginLanding
+ ┃ ┃ ┃ ┣ 📜LoginLandingViewController.swift
+ ┃ ┃ ┃ ┗ 📜LoginLandingViewModel.swift
+ ┃ ┃ ┣ 📂LoginSuccess
+ ┃ ┃ ┃ ┣ 📜LoginSuccessViewController.swift
+ ┃ ┃ ┃ ┗ 📜LoginSuccessViewModel.swift
+ ┃ ┃ ┗ 📂SignUp
+ ┃ ┃ ┃ ┣ 📜SignUpViewController.swift
+ ┃ ┃ ┃ ┗ 📜SignUpViewModel.swift
+ ┃ ┣ 📂Model
+ ┃ ┃ ┗ 📜User.swift
+ ┃ ┣ 📂Persistence
+ ┃ ┃ ┣ 📂Protocol
+ ┃ ┃ ┃ ┣ 📜CoreDataManageable.swift
+ ┃ ┃ ┃ ┗ 📜KeychainManageable.swift
+ ┃ ┃ ┣ 📜CoreDataManager.swift
+ ┃ ┃ ┗ 📜KeychainManager.swift
+ ┃ ┣ 📂Repository
+ ┃ ┃ ┣ 📂Protocol
+ ┃ ┃ ┃ ┣ 📜UserKeychainRepository.swift
+ ┃ ┃ ┃ ┗ 📜UserRepository.swift
+ ┃ ┃ ┣ 📜DefaultUserKeychainRepository.swift
+ ┃ ┃ ┗ 📜DefaultUserRepository.swift
+ ┃ ┗ 📂Service
+ ┃ ┃ ┣ 📂Haptic
+ ┃ ┃ ┃ ┗ 📜HapticService.swift
+ ┃ ┃ ┣ 📂SignUpValidation
+ ┃ ┃ ┃ ┣ 📜SignUpValidationService.swift
+ ┃ ┃ ┃ ┣ 📜SignUpValidator.swift
+ ┃ ┃ ┃ ┗ 📜ValidationResult.swift
+ ┃ ┃ ┗ 📂User
+ ┃ ┃ ┃ ┣ 📜UserManageable.swift
+ ┃ ┃ ┃ ┗ 📜UserManager.swift
+ ┗ 📜.DS_Store
+```
