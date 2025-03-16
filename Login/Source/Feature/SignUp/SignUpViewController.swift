@@ -56,6 +56,8 @@ final class SignUpViewController: UIViewController {
         configureLayout()
         bind()
         configureTapGesture()
+        configureTextFieldDelegates()
+        makeEmailTextFieldFirstResponder()
     }
 
     // MARK: - Functions
@@ -113,6 +115,17 @@ final class SignUpViewController: UIViewController {
         )
     }
 
+    private func configureTextFieldDelegates() {
+        emailInputField.textField.delegate = self
+        passwordInputField.textField.delegate = self
+        confirmPasswordInputField.textField.delegate = self
+        nicknameInputField.textField.delegate = self
+    }
+
+    private func makeEmailTextFieldFirstResponder() {
+        emailInputField.textField.becomeFirstResponder()
+    }
+
     private func bind() {
         let input = SignUpViewModel.Input(
             emailText: emailInputField.rx.text.asObservable(),
@@ -158,5 +171,20 @@ extension SignUpViewController {
     @objc
     private func handleTap() {
         view.endEditing(true)
+    }
+}
+
+extension SignUpViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == emailInputField.textField {
+            passwordInputField.textField.becomeFirstResponder()
+        } else if textField == passwordInputField.textField {
+            confirmPasswordInputField.textField.becomeFirstResponder()
+        } else if textField == confirmPasswordInputField.textField {
+            nicknameInputField.textField.becomeFirstResponder()
+        } else if textField == nicknameInputField.textField {
+            textField.resignFirstResponder()
+        }
+        return true
     }
 }
