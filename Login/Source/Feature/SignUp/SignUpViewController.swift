@@ -27,7 +27,7 @@ final class SignUpViewController: UIViewController {
     private let verticalStackView = UIStackView().then {
         $0.axis = .vertical
         $0.distribution = .fill
-        $0.spacing = 16
+        $0.spacing = 4
         $0.alignment = .center
     }
 
@@ -102,6 +102,8 @@ final class SignUpViewController: UIViewController {
             make.top.equalTo(navigationBar.snp.bottom).offset(16)
             make.horizontalEdges.equalToSuperview().inset(24)
         }
+
+        verticalStackView.setCustomSpacing(16, after: nicknameInputField)
     }
 
     private func bind() {

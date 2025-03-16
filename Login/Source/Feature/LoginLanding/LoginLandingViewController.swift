@@ -82,6 +82,8 @@ final class LoginLandingViewController: UIViewController {
             make.centerY.equalToSuperview()
             make.horizontalEdges.equalToSuperview().inset(24)
         }
+
+        verticalStackView.setCustomSpacing(32, after: welcomeBodyLabel)
     }
 
     private func bind() {
