@@ -1,12 +1,12 @@
 //
-//  LoginKeychainStorage.swift
+//  DefaultUserKeychainRepository.swift
 //  Login
 //
 //  Created by 권승용 on 3/15/25.
 //
 
 /// 키체인에 로그인 상태를 저장하고 관리하는 구조체
-struct LoginKeychainStorage: LoginKeychainStorageable {
+struct DefaultUserKeychainRepository: UserKeychainRepository {
     // MARK: - Properties
 
     /// 키체인에서 로그인 상태를 저장하는 키 값
