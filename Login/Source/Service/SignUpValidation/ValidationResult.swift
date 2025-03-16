@@ -15,7 +15,11 @@ protocol ValidationResult {
 enum EmailValidationResult: ValidationResult {
     case valid // 유효한 이메일
     case invalid // 유효하지 않은 이메일
+    case invalidLength // 길이 조건 불만족 (6-20자)
+    case invalidCharacter // 영문 소문자와 숫자만 사용 가능
+    case startsWithNumber // 숫자로 시작
     case invalidWhitespace // 공백 포함
+    case invalidDomain // 유효하지 않은 도메인
     case empty // 빈 문자열
     case duplicated // 중복
 
@@ -31,8 +35,16 @@ enum EmailValidationResult: ValidationResult {
             return "✅ 올바른 이메일 양식 입니다."
         case .invalid:
             return "❌ 올바르지 않은 이메일 양식 입니다."
+        case .invalidLength:
+            return "❌ 로컬 파트(@ 이전) 영역은 6자에서 20자 사이로 입력해 주세요."
+        case .invalidCharacter:
+            return "❌ 이메일에는 영문 소문자와 숫자만 사용 가능합니다."
+        case .startsWithNumber:
+            return "❌ 이메일은 숫자로 시작할 수 없습니다."
         case .invalidWhitespace:
             return "❌ 이메일은 공백을 포함할 수 없습니다."
+        case .invalidDomain:
+            return "❌ 올바르지 않은 도메인 양식 입니다."
         case .empty:
             return " "
         case .duplicated:
