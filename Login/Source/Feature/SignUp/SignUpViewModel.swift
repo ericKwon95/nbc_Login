@@ -47,8 +47,7 @@ final class SignUpViewModel: ViewModelType {
     private let userRepository: UserRepository
     /// 회원가입 입력값 유효성 검사 서비스
     private let validationService: SignUpValidator
-    /// 로그인 정보 키체인 저장소
-    private let loginKeychainStorage: LoginKeychainStorageable
+    private let userManager: UserManageable
 
     /// 유효성 검사 결과를 전달하는 릴레이
     private let validationResultRelay = PublishRelay<ValidationResult>()
@@ -65,11 +64,11 @@ final class SignUpViewModel: ViewModelType {
     init(
         userRepository: UserRepository,
         validationService: SignUpValidator,
-        loginKeychainStorage: LoginKeychainStorageable
+        userManager: UserManageable
     ) {
         self.userRepository = userRepository
         self.validationService = validationService
-        self.loginKeychainStorage = loginKeychainStorage
+        self.userManager = userManager
     }
 
     // MARK: - Functions
@@ -198,7 +197,7 @@ final class SignUpViewModel: ViewModelType {
                 if validationResult.isValid {
                     let user = User(nickname: nickname, email: email)
                     owner.userRepository.createUser(with: user, password: password)
-                    owner.saveLoginInfo()
+                    owner.saveLoginInfo(with: user)
                     owner.navigateToLoginSuccess.accept(())
                 }
 
@@ -209,10 +208,10 @@ final class SignUpViewModel: ViewModelType {
     }
 
     /// 로그인 정보를 키체인에 저장
-    private func saveLoginInfo() {
+    private func saveLoginInfo(with user: User) {
         Task {
             do {
-                try await loginKeychainStorage.setIsLoggedIn(true)
+                try await userManager.logIn(with: user)
             } catch {
                 errorRelay.accept(error)
             }

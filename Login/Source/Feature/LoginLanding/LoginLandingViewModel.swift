@@ -24,12 +24,12 @@ final class LoginLandingViewModel: ViewModelType {
 
     private let disposeBag = DisposeBag()
 
-    private let loginKeychainStorage: LoginKeychainStorageable
+    private let userManager: UserManageable
 
     // MARK: - Lifecycle
 
-    init(loginKeychainStorage: LoginKeychainStorageable) {
-        self.loginKeychainStorage = loginKeychainStorage
+    init(userManager: UserManageable) {
+        self.userManager = userManager
     }
 
     // MARK: - Functions
@@ -55,6 +55,6 @@ final class LoginLandingViewModel: ViewModelType {
 
 extension LoginLandingViewModel {
     private func isLoggedIn() async throws -> Bool {
-        try await loginKeychainStorage.getIsLoggedIn()
+        try await userManager.isLoggedIn()
     }
 }
