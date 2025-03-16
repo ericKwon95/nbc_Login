@@ -53,6 +53,10 @@ final class LoginLandingViewController: UIViewController {
 
     // MARK: - Functions
 
+    private func configureNavigationItem() {
+        navigationController?.isNavigationBarHidden = true
+    }
+
     private func configureBackgound() {
         view.backgroundColor = .appBackground
     }
@@ -84,7 +88,7 @@ final class LoginLandingViewController: UIViewController {
         let input = LoginLandingViewModel.Input(
             startButtonTapped: startButton.rx.tap.asObservable()
         )
-        let _ = viewModel.transform(input: input)
+        let _ = viewModel.transform(input)
     }
 }
 

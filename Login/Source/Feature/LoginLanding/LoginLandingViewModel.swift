@@ -8,7 +8,7 @@
 import RxRelay
 import RxSwift
 
-final class LoginLandingViewModel {
+final class LoginLandingViewModel: ViewModelType {
     // MARK: - Nested Types
 
     struct Input {
@@ -34,7 +34,7 @@ final class LoginLandingViewModel {
 
     // MARK: - Functions
 
-    func transform(input: Input) -> Output {
+    func transform(_ input: Input) -> Output {
         input.startButtonTapped
             .subscribe(with: self) { owner, _ in
                 Task {
