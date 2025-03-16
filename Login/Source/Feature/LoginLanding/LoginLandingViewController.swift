@@ -82,7 +82,7 @@ final class LoginLandingViewController: UIViewController {
 
     private func bind() {
         let input = LoginLandingViewModel.Input(
-            startButtonTapped: startButton.tapped.asObservable()
+            startButtonTapped: startButton.rx.tap.asObservable()
         )
         let _ = viewModel.transform(input: input)
     }

@@ -5,6 +5,8 @@
 //  Created by 권승용 on 3/14/25.
 //
 
+import RxCocoa
+import RxSwift
 import SnapKit
 import Then
 import UIKit
@@ -13,14 +15,22 @@ import UIKit
 final class CustomInputField: UIView {
     // MARK: - Properties
 
+    let textField = UITextField().then {
+        $0.borderStyle = .roundedRect
+    }
+
     private let inputTitle = UILabel().then {
         $0.font = .systemFont(ofSize: 12, weight: .regular)
         $0.textColor = .fontBlack
     }
 
-    private let textField = UITextField().then {
-        $0.borderStyle = .roundedRect
+    private let validationResultLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 12, weight: .regular)
+        $0.textColor = .fontGray
+        $0.text = " "
     }
+
+    private let disposeBag = DisposeBag()
 
     // MARK: - Lifecycle
 
@@ -29,6 +39,7 @@ final class CustomInputField: UIView {
         configureHierarchy()
         configureLayout()
         configureInputField(with: type)
+        bind()
     }
 
     @available(*, unavailable)
@@ -38,10 +49,20 @@ final class CustomInputField: UIView {
 
     // MARK: - Functions
 
+    func applyValidationResult(_ result: ValidationResult) {
+        let emoji = result.isValid ? "✅" : "❌"
+        validationResultLabel.text = "\(emoji) \(result.description)"
+    }
+
+    func removeValidationResult() {
+        validationResultLabel.text = " "
+    }
+
     private func configureHierarchy() {
         [
             inputTitle,
             textField,
+            validationResultLabel,
         ].forEach { addSubview($0) }
     }
 
@@ -55,6 +76,12 @@ final class CustomInputField: UIView {
             make.top.equalTo(inputTitle.snp.bottom).offset(4)
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(44)
+        }
+
+        validationResultLabel.snp.makeConstraints { make in
+            make.top.equalTo(textField.snp.bottom)
+            make.leading.equalTo(textField)
+            make.height.equalTo(32)
             make.bottom.equalToSuperview()
         }
     }
@@ -76,6 +103,20 @@ final class CustomInputField: UIView {
             textField.textContentType = .nickname
             textField.keyboardType = .asciiCapable
         }
+    }
+
+    private func bind() {
+        // 공백 제거
+        textField.rx.text.orEmpty
+            .map { $0.replacingOccurrences(of: " ", with: "") }
+            .bind(to: textField.rx.text)
+            .disposed(by: disposeBag)
+    }
+}
+
+extension Reactive where Base: CustomInputField {
+    var text: ControlProperty<String> {
+        base.textField.rx.text.orEmpty
     }
 }
 

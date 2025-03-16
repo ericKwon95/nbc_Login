@@ -5,6 +5,7 @@
 //  Created by 권승용 on 3/14/25.
 //
 
+import RxCocoa
 import RxRelay
 import RxSwift
 import SnapKit
@@ -21,12 +22,9 @@ enum CustomButtonStyle {
 final class CustomButton: UIView {
     // MARK: - Properties
 
-    let tapped = PublishRelay<Void>()
+    var button = UIButton()
 
     private let imageView = UIImageView()
-    private var button = UIButton()
-
-    private let disposeBag = DisposeBag()
 
     // MARK: - Lifecycle
 
@@ -39,7 +37,6 @@ final class CustomButton: UIView {
         configureAppearance(style: style, title: title, image: image)
         configureHierarchy()
         configureLayout()
-        bind()
     }
 
     @available(*, unavailable)
@@ -48,6 +45,10 @@ final class CustomButton: UIView {
     }
 
     // MARK: - Functions
+
+    func setEnableStatus(_ isEnabled: Bool) {
+        button.isEnabled = isEnabled
+    }
 
     private func configureHierarchy() {
         addSubview(button)
@@ -86,11 +87,11 @@ final class CustomButton: UIView {
             button = UIButton(configuration: configure)
         }
     }
+}
 
-    private func bind() {
-        button.rx.tap
-            .bind(to: tapped)
-            .disposed(by: disposeBag)
+extension Reactive where Base: CustomButton {
+    var tap: ControlEvent<Void> {
+        base.button.rx.tap
     }
 }
 
