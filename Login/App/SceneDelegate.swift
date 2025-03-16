@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    private let disposeBag = DisposeBag()
+    private var appCoordinator: AppCoordinator?
 
     // MARK: - Functions
 
@@ -26,55 +26,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        let keychainManager = KeychainManager()
+        // 의존성 초기화
         let coreDataManager = CoreDataManager.shared
-        let loginKeychainStorage = LoginKeychainStorage(keychainManager: keychainManager)
-
-        let loginLandingViewModel =
-            LoginLandingViewModel(loginKeychainStorage: loginKeychainStorage)
-        let loginLandingViewController =
-            LoginLandingViewController(viewModel: loginLandingViewModel)
-
+        let userManager = UserManager.shared
         let userRepository = DefaultUserRepository(coredataManager: coreDataManager)
-        let validationService = SignUpValidationService(repository: userRepository)
-        let signUpViewModel = SignUpViewModel(
-            userRepository: userRepository,
-            validationService: validationService,
-            loginKeychainStorage: loginKeychainStorage
+
+        // 네비게이션 컨트롤러 및 코디네이터 설정
+        let navigationController = UINavigationController()
+        appCoordinator = AppCoordinator(
+            navigationController: navigationController,
+            userManager: userManager,
+            userRepository: userRepository
         )
-        let signUpViewController = SignUpViewController(viewModel: signUpViewModel)
 
-        let navigationController =
-            UINavigationController(rootViewController: loginLandingViewController)
-
-        loginLandingViewModel.navigateToSignUp
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self) { _, _ in
-                navigationController.pushViewController(signUpViewController, animated: true)
-            }
-            .disposed(by: disposeBag)
-
-        loginLandingViewModel.navigateToLoginSuccess
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self) { _, _ in
-                let loginSuccessViewController = LoginSuccessViewController()
-                navigationController.pushViewController(loginSuccessViewController, animated: true)
-            }
-            .disposed(by: disposeBag)
-
-        signUpViewModel.navigateToLoginSuccess
-            .observe(on: MainScheduler.instance)
-            .subscribe(with: self) { _, _ in
-                navigationController.pushViewController(
-                    LoginSuccessViewController(),
-                    animated: true
-                )
-            }
-            .disposed(by: disposeBag)
-
+        // 윈도우 설정 및 코디네이터 시작
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+
+        appCoordinator?.start()
     }
 
     func sceneDidEnterBackground(_: UIScene) {

@@ -26,6 +26,8 @@ final class SignUpViewModel: ViewModelType {
         let nicknameText: Observable<String>
         /// 회원가입 버튼 탭 이벤트 스트림
         let signUpButtonTapped: Observable<Void>
+        /// 뒤로가기 버튼 탭 이벤트 스트림
+        let dismissButtonTapped: Observable<Void>
     }
 
     /// ViewModel이 출력할 수 있는 값들을 정의
@@ -42,13 +44,14 @@ final class SignUpViewModel: ViewModelType {
 
     /// 회원가입 성공 시 로그인 화면으로 이동하기 위한 릴레이
     let navigateToLoginSuccess = PublishRelay<Void>()
+    /// 뒤로가기 버튼 탭 이벤트 처리를 위한 릴레이
+    let navigateBack = PublishRelay<Void>()
 
     /// 사용자 정보 관련 저장소
     private let userRepository: UserRepository
     /// 회원가입 입력값 유효성 검사 서비스
     private let validationService: SignUpValidator
-    /// 로그인 정보 키체인 저장소
-    private let loginKeychainStorage: LoginKeychainStorageable
+    private let userManager: UserManageable
 
     /// 유효성 검사 결과를 전달하는 릴레이
     private let validationResultRelay = PublishRelay<ValidationResult>()
@@ -65,11 +68,11 @@ final class SignUpViewModel: ViewModelType {
     init(
         userRepository: UserRepository,
         validationService: SignUpValidator,
-        loginKeychainStorage: LoginKeychainStorageable
+        userManager: UserManageable
     ) {
         self.userRepository = userRepository
         self.validationService = validationService
-        self.loginKeychainStorage = loginKeychainStorage
+        self.userManager = userManager
     }
 
     // MARK: - Functions
@@ -78,6 +81,11 @@ final class SignUpViewModel: ViewModelType {
     /// - Parameter input: 사용자의 입력값들
     /// - Returns: 처리된 결과값들
     func transform(_ input: Input) -> Output {
+        // 뒤로가기 버튼 탭 이벤트 처리
+        input.dismissButtonTapped
+            .bind(to: navigateBack)
+            .disposed(by: disposeBag)
+
         // 각각의 유효성 검사 스트림 설정
         let validationStreams = createValidationStreams(from: input)
 
@@ -198,7 +206,7 @@ final class SignUpViewModel: ViewModelType {
                 if validationResult.isValid {
                     let user = User(nickname: nickname, email: email)
                     owner.userRepository.createUser(with: user, password: password)
-                    owner.saveLoginInfo()
+                    owner.saveLoginInfo(with: user)
                     owner.navigateToLoginSuccess.accept(())
                 }
 
@@ -209,10 +217,10 @@ final class SignUpViewModel: ViewModelType {
     }
 
     /// 로그인 정보를 키체인에 저장
-    private func saveLoginInfo() {
+    private func saveLoginInfo(with user: User) {
         Task {
             do {
-                try await loginKeychainStorage.setIsLoggedIn(true)
+                try await userManager.logIn(with: user)
             } catch {
                 errorRelay.accept(error)
             }

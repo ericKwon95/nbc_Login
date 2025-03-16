@@ -14,6 +14,8 @@ import UIKit
 final class SignUpViewController: UIViewController {
     // MARK: - Properties
 
+    private let viewModel: SignUpViewModel
+
     private let navigationBar = CustomNavigationBar()
 
     private let emailInputField = CustomInputField(with: .email)
@@ -28,8 +30,6 @@ final class SignUpViewController: UIViewController {
         $0.spacing = 16
         $0.alignment = .center
     }
-
-    private let viewModel: SignUpViewModel
 
     private let disposeBag = DisposeBag()
 
@@ -110,7 +110,8 @@ final class SignUpViewController: UIViewController {
             passwordText: passwordInputField.rx.text.asObservable(),
             confirmPasswordText: confirmPasswordInputField.rx.text.asObservable(),
             nicknameText: nicknameInputField.rx.text.asObservable(),
-            signUpButtonTapped: signupButton.rx.tap.asObservable()
+            signUpButtonTapped: signupButton.rx.tap.asObservable(),
+            dismissButtonTapped: navigationBar.rx.backButtonTap.asObservable()
         )
 
         let output = viewModel.transform(input)

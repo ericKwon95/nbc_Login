@@ -5,7 +5,8 @@
 //  Created by 권승용 on 3/14/25.
 //
 
-import Combine
+import RxCocoa
+import RxSwift
 import SnapKit
 import Then
 import UIKit
@@ -13,7 +14,7 @@ import UIKit
 final class CustomNavigationBar: UIView {
     // MARK: - Properties
 
-    private let backButton = {
+    let backButton = {
         var config = UIButton.Configuration.borderless()
         config.image = .arrowLeft
         config.title = "돌아가기"
@@ -55,7 +56,7 @@ final class CustomNavigationBar: UIView {
 
     private func configureLayout() {
         backButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
         }
 
@@ -65,7 +66,8 @@ final class CustomNavigationBar: UIView {
     }
 }
 
-@available(iOS 17.0, *)
-#Preview {
-    CustomNavigationBar()
+extension Reactive where Base: CustomNavigationBar {
+    var backButtonTap: ControlEvent<Void> {
+        base.backButton.rx.tap
+    }
 }
