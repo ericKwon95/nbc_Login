@@ -60,6 +60,7 @@ final class LoginSuccessViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureBackground()
+        configureNavigationItem()
         configureHierarchy()
         configureLayout()
         bind()
@@ -70,6 +71,10 @@ final class LoginSuccessViewController: UIViewController {
 
     private func configureBackground() {
         view.backgroundColor = .appBackground
+    }
+
+    private func configureNavigationItem() {
+        navigationController?.isNavigationBarHidden = true
     }
 
     private func configureHierarchy() {
