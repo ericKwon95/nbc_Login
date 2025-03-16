@@ -7,29 +7,18 @@
 
 import UIKit
 
+/// 햅틱 기능 제공 서비스
 enum HapticService {
-    case impact(UIImpactFeedbackGenerator.FeedbackStyle)
-    case notification(UINotificationFeedbackGenerator.FeedbackType)
     case selection
 
     // MARK: - Static Properties
 
-    static let impactGenerator = UIImpactFeedbackGenerator()
-    static let notificationGenerator = UINotificationFeedbackGenerator()
     static let feedbackGenerator = UISelectionFeedbackGenerator()
 
     // MARK: - Functions
 
     func run() {
         switch self {
-        case .impact:
-            let generator = HapticService.impactGenerator
-            generator.prepare()
-            generator.impactOccurred()
-        case let .notification(type):
-            let generator = HapticService.notificationGenerator
-            generator.prepare()
-            generator.notificationOccurred(type)
         case .selection:
             let generator = HapticService.feedbackGenerator
             generator.prepare()
