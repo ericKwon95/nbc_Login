@@ -17,7 +17,7 @@ struct EmailValidationTests {
     // MARK: - Lifecycle
 
     init() {
-        service = SignUpValidationService()
+        service = SignUpValidationService(repository: MockUserRepository())
     }
 
     // MARK: - Functions
