@@ -26,6 +26,8 @@ final class SignUpViewModel: ViewModelType {
         let nicknameText: Observable<String>
         /// 회원가입 버튼 탭 이벤트 스트림
         let signUpButtonTapped: Observable<Void>
+        /// 뒤로가기 버튼 탭 이벤트 스트림
+        let dismissButtonTapped: Observable<Void>
     }
 
     /// ViewModel이 출력할 수 있는 값들을 정의
@@ -42,6 +44,8 @@ final class SignUpViewModel: ViewModelType {
 
     /// 회원가입 성공 시 로그인 화면으로 이동하기 위한 릴레이
     let navigateToLoginSuccess = PublishRelay<Void>()
+    /// 뒤로가기 버튼 탭 이벤트 처리를 위한 릴레이
+    let navigateBack = PublishRelay<Void>()
 
     /// 사용자 정보 관련 저장소
     private let userRepository: UserRepository
@@ -77,6 +81,11 @@ final class SignUpViewModel: ViewModelType {
     /// - Parameter input: 사용자의 입력값들
     /// - Returns: 처리된 결과값들
     func transform(_ input: Input) -> Output {
+        // 뒤로가기 버튼 탭 이벤트 처리
+        input.dismissButtonTapped
+            .bind(to: navigateBack)
+            .disposed(by: disposeBag)
+
         // 각각의 유효성 검사 스트림 설정
         let validationStreams = createValidationStreams(from: input)
 

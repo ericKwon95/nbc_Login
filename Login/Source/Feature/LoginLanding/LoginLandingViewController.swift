@@ -12,6 +12,8 @@ import UIKit
 final class LoginLandingViewController: UIViewController {
     // MARK: - Properties
 
+    private let viewModel: LoginLandingViewModel
+
     private let welcomeTitleLabel = TitleLabel().then {
         $0.setText("환영합니다! 😆")
     }
@@ -28,8 +30,6 @@ final class LoginLandingViewController: UIViewController {
         $0.alignment = .center
         $0.distribution = .fill
     }
-
-    private let viewModel: LoginLandingViewModel
 
     // MARK: - Lifecycle
 
@@ -89,19 +89,5 @@ final class LoginLandingViewController: UIViewController {
             startButtonTapped: startButton.rx.tap.asObservable()
         )
         let _ = viewModel.transform(input)
-    }
-}
-
-@available(iOS 17.0, *)
-#Preview {
-    LoginLandingViewController(
-        viewModel: LoginLandingViewModel(loginKeychainStorage: MockLoginKeychainStorage())
-    )
-}
-
-private struct MockLoginKeychainStorage: LoginKeychainStorageable {
-    func setIsLoggedIn(_: Bool) async throws {}
-    func getIsLoggedIn() async throws -> Bool {
-        true
     }
 }
